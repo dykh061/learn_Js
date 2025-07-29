@@ -1,0 +1,21 @@
+{
+  "name": "learnjs",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "src/startWebSV.mjs",
+  "scripts": {
+    "start": "nodemon --inspect src/startWebSV.mjs",
+    "watch": "sass --watch src/resources/scss/app.scss src/public/css/app.css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-handlebars": "^8.0.3",
+    "morgan": "^1.10.1",
+    "nodemon": "^3.1.10",
+    "sass": "^1.89.2"
+  }
+}
