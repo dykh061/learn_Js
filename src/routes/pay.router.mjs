@@ -1,7 +1,7 @@
 import express from "express";
-import paysController from "../app/controllers/paysController.mjs";
+import payController from "../app/controllers/pay.Controller.mjs";
 const router = express.Router();
 
-router.get("/", paysController.index);
+router.get("/", payController.index);
 
 export default router;
