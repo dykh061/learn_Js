@@ -1,0 +1,40 @@
+<div class="mt-4">
+
+  <form action="/khoa-hoc/store" method="POST">
+    <div class="mb-3">
+      <label for="name" class="form-label">Course Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Enter course name"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        class="form-control"
+        id="description"
+        name="description"
+        rows="3"
+        placeholder="Enter description"
+      ></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="image" class="form-label">Image URL</label>
+      <input
+        type="text"
+        class="form-control"
+        id="image"
+        name="image"
+        placeholder="Enter image URL"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Course</button>
+  </form>
+
+</div>

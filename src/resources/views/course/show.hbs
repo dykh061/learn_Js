@@ -1,2 +1,17 @@
-<h1>course</h1>
-<img src="{{course.image}}" alt="" />
+<div class="container mt-5">
+  <div class="card">
+    <img src="{{course.image}}" class="card-img-top" alt="Course Image" />
+    <div class="card-body">
+      <h3 class="card-title">{{course.name}}</h3>
+      <p class="card-text">{{course.description}}</p>
+
+      <ul class="list-group list-group-flush mt-3">
+        <li class="list-group-item"><strong>Slug:</strong> {{course.slug}}</li>
+        <li class="list-group-item"><strong>Created at:</strong>
+          {{course.createdAt}}</li>
+        <li class="list-group-item"><strong>Updated at:</strong>
+          {{course.updatedAt}}</li>
+      </ul>
+    </div>
+  </div>
+</div>
