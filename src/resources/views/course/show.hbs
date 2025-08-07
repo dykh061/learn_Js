@@ -1,17 +1,19 @@
-<div class="container mt-5">
-  <div class="card">
-    <img src="{{course.image}}" class="card-img-top" alt="Course Image" />
-    <div class="card-body">
-      <h3 class="card-title">{{course.name}}</h3>
-      <p class="card-text">{{course.description}}</p>
+<div class="mt-4">
+  <div class="card mb-3" style="max-width: 700px; margin: auto;">
+    <!-- Ảnh to ở trên -->
+    <img
+      src="{{course.image}}"
+      class="card-img-top img-fluid"
+      alt="Ảnh sản phẩm"
+    />
 
-      <ul class="list-group list-group-flush mt-3">
-        <li class="list-group-item"><strong>Slug:</strong> {{course.slug}}</li>
-        <li class="list-group-item"><strong>Created at:</strong>
-          {{course.createdAt}}</li>
-        <li class="list-group-item"><strong>Updated at:</strong>
-          {{course.updatedAt}}</li>
-      </ul>
+    <!-- Nội dung ở dưới ảnh -->
+    <div class="card-body">
+      <h5 class="card-title">{{course.name}}</h5>
+      <p class="card-text">
+        <strong>Mô tả:</strong>
+        {{course.description}}
+      </p>
     </div>
   </div>
 </div>

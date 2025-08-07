@@ -8,7 +8,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import router from "./routes/index.mjs";
 import * as db from "./config/db/index.mjs";
-
+import methodOverride from "method-override";
 db.connect();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -17,6 +17,9 @@ const __dirname = path.dirname(__filename);
 //Cho phép truy cập trực tiếp các file tĩnh trong thư mục 'public' (ảnh, CSS, JS, v.v.)
 
 app.use(express.static(path.join(__dirname, "public")));
+
+//Cho phép dùng method put path delete trong form html bằng cách giả lập method
+app.use(methodOverride("_method"));
 
 // handlebars viet layout html trong express
 
@@ -29,13 +32,16 @@ app.engine(
   "hbs",
   engine({
     extname: ".hbs",
+    helpers: {
+      addOne: (a, b) => a + b,
+    },
   })
 );
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views"));
 
 // http logger
-// app.use(morgan("combined"));
+app.use(morgan("combined"));
 
 //router
 // route init
@@ -44,5 +50,5 @@ router(app);
 
 //listen port 3000
 app.listen(port, function () {
-  console.log(`Example app listening at port: ${port}`);
+  console.log(`App listening at port: ${port}`);
 });

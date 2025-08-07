@@ -4,6 +4,9 @@ class CourseController {
   show(req, res, next) {
     Course.findOne({ slug: req.params.slug })
       .then((course) => {
+        if (!course) {
+          return res.status(404).send("Khoa Hoc Khong Ton Tai !!");
+        }
         res.render("course/show", { course: mongooseToObject(course) });
       })
       .catch(next);
@@ -17,6 +20,30 @@ class CourseController {
       .save()
       .then(() => res.redirect("/"))
       .catch((error) => {});
+  }
+  edit(req, res, next) {
+    Course.findById({ _id: req.params.id })
+      .then((course) => {
+        if (!course) {
+          return res.status(404).send("Khoa Hoc Khong Ton Tai!!");
+        }
+        res.render("course/edit", {
+          course: mongooseToObject(course),
+        });
+      })
+      .catch(next);
+  }
+  update(req, res, next) {
+    Course.findByIdAndUpdate({ _id: req.params.id }, req.body)
+      .then(() => res.redirect("/me/stored/courses"))
+      .catch(next);
+  }
+  delete(req, res, next) {
+    Course.deleteOne({
+      _id: req.params.id,
+    })
+      .then(() => res.redirect("/me/stored/courses"))
+      .catch(next);
   }
 }
 

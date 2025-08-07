@@ -1,0 +1,95 @@
+<table class="table mt-4">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Image</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Created At</th>
+      <th scope="col">Updated At</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each courses}}
+      <tr>
+        <th scope="row">{{addOne @index 1}}</th>
+        <td><img src="{{this.image}}" class="table-img" /></td>
+        <td><p>{{this.name}}</p></td>
+        <td><p>{{this.description}}</p></td>
+        <td><p>{{this.createdAt}}</p></td>
+        <td><p>{{this.updatedAt}}</p></td>
+        <td>
+          <a href="/course/{{this._id}}/edit">
+            <button type="button" class="btn btn-outline-success">Edit</button>
+          </a>
+        </td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#course-delete-modal"
+            data-id="{{this._id}}"
+            data-name="{{this.name}}"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<div
+  class="modal fade"
+  id="course-delete-modal"
+  tabindex="-1"
+  aria-labelledby="deleteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="deleteModalLabel">Xác Nhận</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <span>
+          Bạn có chắc chắn muốn xóa khóa học không?
+        </span>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-danger"
+          id="btn-delete-course"
+        >Yes</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{! Hidden form }}
+<form method="post" id="delete-course-form"></form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () { var courseId; var
+  deleteForm = document.forms['delete-course-form']; var btnDeleteCourse =
+  document.getElementById('btn-delete-course'); const deleteModal =
+  document.getElementById('course-delete-modal');
+  deleteModal.addEventListener('show.bs.modal', function (event) { var button =
+  event.relatedTarget; courseId = button.getAttribute('data-id');
+  console.log('Course ID:', courseId); }); btnDeleteCourse.onclick = function(){
+  deleteForm.action='/course/delete/'+courseId+'?_method=DELETE';
+  deleteForm.submit(); } });
+</script>

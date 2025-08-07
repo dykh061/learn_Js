@@ -1,25 +1,31 @@
-<div class="mt-4">
-
-  <div class="row">
-
+<div class="container py-5">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
     {{#each course}}
-      <div class="col-sm-6 col-lg-4">
-        <div class="card">
-          <a href="/khoa-hoc/{{this.slug}}">
-            <img src="{{this.image}}" class="card-img-top" alt="..." />
-          </a>
+      <div class="col">
+        <div
+          class="card h-100 shadow-sm border-0 rounded-4 overflow-hidden d-flex flex-column"
+        >
 
-          <div class="card-body">
-            <a href="/khoa-hoc?{{this.slug}}">
-              <h5 class="card-title">Card title</h5>
-            </a>
-            <p class="card-text">Some quick example text to build on the card
-              title and make up the bulk of the card’s content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+          <!-- Ảnh cố định khung -->
+          <div class="ratio ratio-16x9">
+            <img
+              src="{{this.image}}"
+              class="object-fit-cover"
+              alt="Course image"
+            />
+          </div>
+
+          <!-- Nội dung -->
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{this.name}}</h5>
+            <p class="card-text text-muted flex-grow-1">{{this.description}}</p>
+            <a
+              href="/course/{{this.slug}}"
+              class="btn btn-outline-primary mt-auto w-100"
+            >Xem chi tiết</a>
           </div>
         </div>
       </div>
     {{/each}}
-
   </div>
 </div>
