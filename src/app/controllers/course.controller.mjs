@@ -1,5 +1,6 @@
 import Course from "../models/course.mjs";
 import { mongooseToObject } from "../../utils/mongoose.mjs";
+import { restoreCourseById } from "../../utils/softDeleteHelpers.mjs";
 class CourseController {
   show(req, res, next) {
     Course.findOne({ slug: req.params.slug })
@@ -39,6 +40,20 @@ class CourseController {
       .catch(next);
   }
   delete(req, res, next) {
+    Course.delete({
+      _id: req.params.id,
+    })
+      .then(() => res.redirect("/me/stored/courses"))
+      .catch(next);
+  }
+  restore(req, res, next) {
+    restoreCourseById(req.params.id)
+      .then(() => {
+        res.redirect("/me/stored/courses");
+      })
+      .catch(next);
+  }
+  destroy(req, res, next) {
     Course.deleteOne({
       _id: req.params.id,
     })

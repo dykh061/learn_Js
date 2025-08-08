@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 import slug from "mongoose-slug-generator";
 import slugify from "slugify";
+import mongooseDelete from "mongoose-delete";
+
 mongoose.plugin(slug);
+
 const Schema = mongoose.Schema;
 const Course = new Schema(
   {
@@ -26,6 +29,13 @@ Course.pre("save", async function (next) {
     this.slug = uniqueSlug;
   }
   next();
+});
+
+// add plugins
+
+Course.plugin(mongooseDelete, {
+  deletedAt: true,
+  overrideMethods: "all",
 });
 
 export default mongoose.model("Course", Course);

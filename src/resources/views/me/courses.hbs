@@ -1,3 +1,20 @@
+<div class="d-flex justify-content-between align-items-center mb-3 mt-4">
+  <h3 class="mb-0">Danh Sách Khóa Học</h3>
+  <a href="/me/trash/courses">
+    <button type="button" class="btn btn-outline-danger position-relative">
+      <i class="bi bi-trash3-fill me-1"></i>
+      Thùng Rác
+      {{#if documentDeleted}}
+        <span
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+        >
+          {{documentDeleted}}
+          <span class="visually-hidden">unread messages</span>
+        </span>
+      {{/if}}
+    </button>
+  </a>
+</div>
 <table class="table mt-4">
   <thead>
     <tr>
@@ -34,6 +51,22 @@
           >
             Delete
           </button>
+        </td>
+      </tr>
+
+    {{else}}
+      <tr>
+        <td colspan="8">
+          <div class="text-center py-5">
+            <i class="bi bi-journal-x display-3 text-secondary mb-3"></i>
+            <h5 class="fw-bold mb-2">Bạn Chưa Đăng Khóa Học Nào</h5>
+            <p class="text-muted">Hãy bắt đầu chia sẻ kiến thức bằng cách tạo
+              khóa học đầu tiên.</p>
+            <a href="/course/create" class="btn btn-outline-primary mt-3">
+              <i class="bi bi-plus-circle me-1"></i>
+              Đăng Khóa Học
+            </a>
+          </div>
         </td>
       </tr>
     {{/each}}
@@ -88,8 +121,7 @@
   document.getElementById('btn-delete-course'); const deleteModal =
   document.getElementById('course-delete-modal');
   deleteModal.addEventListener('show.bs.modal', function (event) { var button =
-  event.relatedTarget; courseId = button.getAttribute('data-id');
-  console.log('Course ID:', courseId); }); btnDeleteCourse.onclick = function(){
-  deleteForm.action='/course/delete/'+courseId+'?_method=DELETE';
-  deleteForm.submit(); } });
+  event.relatedTarget; courseId = button.getAttribute('data-id'); });
+  btnDeleteCourse.onclick = function () { deleteForm.action = '/course/delete/'
+  + courseId + '?_method=DELETE'; deleteForm.submit(); }; });
 </script>
