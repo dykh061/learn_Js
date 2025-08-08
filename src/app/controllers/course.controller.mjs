@@ -60,6 +60,16 @@ class CourseController {
       .then(() => res.redirect("/me/stored/courses"))
       .catch(next);
   }
+  deleteMultiple(req, res, next) {
+    const courseIds = req.body["courseIds[]"];
+    Course.delete({
+      _id: courseIds,
+    })
+      .then(() => {
+        res.redirect("/me/stored/courses");
+      })
+      .catch(next);
+  }
 }
 
 const courseController = new CourseController();

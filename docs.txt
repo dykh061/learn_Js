@@ -1,0 +1,5 @@
+boostrap
+jquery
+mongoose
+handlebars
+scss
