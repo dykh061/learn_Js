@@ -1,6 +1,9 @@
 import Course from "../models/course.mjs";
 import { mongooseToObject } from "../../utils/mongoose.mjs";
-import { restoreCourseById } from "../../utils/softDeleteHelpers.mjs";
+import {
+  restoreCourseById,
+  restoreCourseByListIds,
+} from "../../utils/softDeleteHelpers.mjs";
 class CourseController {
   show(req, res, next) {
     Course.findOne({ slug: req.params.slug })
@@ -60,11 +63,38 @@ class CourseController {
       .then(() => res.redirect("/me/stored/courses"))
       .catch(next);
   }
+  destroyBulk(req, res, next) {
+    let courseIds = req.body["courseIds[]"];
+    if (courseIds === undefined) {
+      return res.redirect("/me/trash/courses");
+    }
+    if (!Array.isArray(courseIds)) {
+      courseIds = [courseIds];
+    }
+    Course.deleteMany({
+      _id: { $in: courseIds },
+    })
+      .then(() => {
+        res.redirect("/me/trash/courses");
+      })
+      .catch(next);
+  }
   deleteMultiple(req, res, next) {
     const courseIds = req.body["courseIds[]"];
     Course.delete({
       _id: courseIds,
     })
+      .then(() => {
+        res.redirect("/me/stored/courses");
+      })
+      .catch(next);
+  }
+  restoreBulk(req, res, next) {
+    let courseIds = req.body["courseIds[]"];
+    if (!Array.isArray(courseIds)) {
+      courseIds = [courseIds];
+    }
+    restoreCourseByListIds(courseIds)
       .then(() => {
         res.redirect("/me/stored/courses");
       })

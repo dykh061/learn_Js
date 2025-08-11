@@ -36,3 +36,11 @@ h1 {
 #no-data-in-home-page:hover {
   background-color: #e9ecef;
 }
+th.sort-column {
+  min-width: 150px;
+  text-align: center;
+  vertical-align: middle;
+}
+th.sort-column i {
+  margin-left: 5px;
+}

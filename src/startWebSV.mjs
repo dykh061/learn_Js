@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 import router from "./routes/index.mjs";
 import * as db from "./config/db/index.mjs";
 import methodOverride from "method-override";
+import { sortMiddleware } from "./app/middlewares/sort.middleware.mjs";
 db.connect();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,6 +28,9 @@ app.use(methodOverride("_method"));
 app.use(express.urlencoded());
 app.use(express.json());
 
+//Custom middleware
+app.use(sortMiddleware);
+
 //template engine
 app.engine(
   "hbs",
@@ -34,6 +38,25 @@ app.engine(
     extname: ".hbs",
     helpers: {
       addOne: (a, b) => a + b,
+      sortable: (field, sort) => {
+        const sortType = field === sort.column ? sort.type : "default";
+        const icons = {
+          default: "cil-elevator",
+          asc: "bi bi-sort-up",
+          desc: "bi bi-sort-up-alt",
+        };
+        const types = {
+          default: "desc",
+          asc: "desc",
+          desc: "asc",
+        };
+        const type = types[sortType] || "default";
+        const icon = icons[sortType] || types.default;
+
+        return `<a href="?_sort&column=${field}&type=${type}">
+            <i class="${icon}"></i>
+          </a>`;
+      },
     },
   })
 );
@@ -41,7 +64,7 @@ app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources", "views"));
 
 // http logger
-app.use(morgan("combined"));
+// app.use(morgan("combined"));
 
 //router
 // route init

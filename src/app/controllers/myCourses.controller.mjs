@@ -6,7 +6,15 @@ import {
 } from "../../utils/softDeleteHelpers.mjs";
 class MyCoursesController {
   index(req, res, next) {
-    Promise.all([course.find(), countDeletedCourses()])
+    let courseQuery = course.find();
+
+    if ("_sort" in req.query) {
+      courseQuery = courseQuery.sort({
+        [req.query.column]: req.query.type,
+      });
+    }
+
+    Promise.all([courseQuery, countDeletedCourses()])
       .then(([courses, documentDeleted]) => {
         res.render("me/courses", {
           documentDeleted,

@@ -15,3 +15,10 @@ export async function restoreCourseById(id) {
   }
   return await Course.restore({ _id: id });
 }
+
+export async function restoreCourseByListIds(ids) {
+  if (!Array.isArray(ids) || ids.length === 0) {
+    throw new Error("Danh sách ID không hợp lệ");
+  }
+  return await Course.restore({ _id: { $in: ids } });
+}

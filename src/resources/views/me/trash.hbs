@@ -8,31 +8,75 @@
   <h3 class="mb-0 mx-auto">Danh Sách Khóa Học Đã Xóa</h3>
 </div>
 
-<table class="table mt-4 align-middle">
-  <thead class="table-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Image</th>
-      <th scope="col">Name</th>
-      <th scope="col">Description</th>
-      <th scope="col">Deleted At</th>
-      <th scope="col" colspan="2" class="text-center">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each trashCourses}}
+<form method="POST" action="#" id="bulk-action-form">
+
+  <div class="d-flex align-items-center gap-3 ps-3 mb-2">
+    <div class="form-check d-flex align-items-center gap-2">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        id="checkbox-all"
+        style="transform: scale(1.3);"
+      />
+      <label class="form-check-label mb-0 fs-5" for="checkbox-all">All</label>
+    </div>
+
+    <select
+      class="form-select form-select-sm w-auto"
+      id="bulk-action"
+      name="bulkAction"
+      required
+    >
+      <option value="" selected disabled>Chọn chức năng</option>
+      <option value="restore">Khôi phục</option>
+      <option value="delete">Xóa</option>
+    </select>
+    <div class="invalid-feedback">
+      Vui lòng chọn chức năng trước khi thực hiện.
+    </div>
+
+    <div class="ms-auto text-end pe-2">
+      <button
+        class="btn btn-outline-danger btn-sm execute-action-btn"
+        disabled
+      >Thực Thi</button>
+    </div>
+  </div>
+
+  <table class="table mt-4 align-middle">
+    <thead class="table-light">
       <tr>
-        <th scope="row">{{addOne @index 1}}</th>
-        <td><img
-            src="{{this.image}}"
-            class="table-img rounded"
-            style="width: 100px; height: auto;"
-          /></td>
-        <td>{{this.name}}</td>
-        <td>{{this.description}}</td>
-        <td>{{this.deletedAt}}</td>
-        <td class="text-center">
-          <a href="">
+        <th scope="col" colspan="2">#</th>
+        <th scope="col">Image</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Deleted At</th>
+        <th scope="col" colspan="2" class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each trashCourses}}
+        <tr>
+          <th>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="courseIds[]"
+                value="{{this._id}}"
+              />
+            </div>
+          </th>
+          <th scope="row">{{addOne @index 1}}</th>
+          <td><img
+              src="{{this.image}}"
+              class="table-img rounded"
+              style="width: 100px; height: auto;"
+            /></td>
+          <td>{{this.name}}</td>
+          <td>{{this.description}}</td>
+          <td>{{this.deletedAt}}</td>
+          <td class="text-center">
             <button
               type="button"
               class="btn btn-outline-success"
@@ -41,42 +85,39 @@
               <i class="bi bi-arrow-clockwise me-1"></i>
               Khôi Phục
             </button>
-          </a>
-        </td>
-        <td class="text-center">
+          </td>
+          <td class="text-center">
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              data-bs-toggle="modal"
+              data-bs-target="#course-delete-modal"
+              data-id="{{this._id}}"
+            >
+              <i class="bi bi-x-circle me-1"></i>
+              Xóa Vĩnh Viễn
+            </button>
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="8">
+            <div class="text-center py-5">
+              <i class="bi bi-trash display-3 text-secondary mb-3"></i>
+              <h5 class="fw-bold mb-2">Thùng Rác Trống</h5>
+              <p class="text-muted">Không có khóa học nào bị xóa gần đây.</p>
+              <a href="/me/stored/courses" class="btn btn-outline-primary mt-3">
+                <i class="bi bi-arrow-left me-1"></i>
+                Quay lại danh sách khóa học
+              </a>
+            </div>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</form>
 
-          <button
-            type="button"
-            class="btn btn-outline-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#course-delete-modal"
-            data-id="{{this._id}}"
-          >
-            <i class="bi bi-x-circle me-1"></i>
-            Xóa Vĩnh Viễn
-          </button>
-
-        </td>
-      </tr>
-    {{else}}
-      <tr>
-        <td colspan="7">
-          <div class="text-center py-5">
-            <i class="bi bi-trash display-3 text-secondary mb-3"></i>
-            <h5 class="fw-bold mb-2">Thùng Rác Trống</h5>
-            <p class="text-muted">Không có khóa học nào bị xóa gần đây.</p>
-            <a href="/me/stored/courses" class="btn btn-outline-primary mt-3">
-              <i class="bi bi-arrow-left me-1"></i>
-              Quay lại danh sách khóa học
-            </a>
-          </div>
-        </td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
-
-{{! Modal xác nhận xóa vĩnh viễn }}
 <div
   class="modal fade"
   id="course-delete-modal"
@@ -121,15 +162,33 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-  $(document).ready(function () { const restoreForm = $('#restore-course-form');
-  const deleteForm = $('#force-delete-course-form'); let courseId;
-  $('.btn-outline-success').click(function (e) { e.preventDefault(); courseId =
-  $(this).data('id'); restoreForm.attr('action', '/course/restore/' + courseId +
-  '?_method=PATCH'); restoreForm.submit(); }); const btnForceDelete =
-  $('#btn-force-delete-course'); const deleteModal = $('#course-delete-modal');
-  deleteModal.on('show.bs.modal', function (event) { const button =
-  $(event.relatedTarget); courseId = button.data('id'); });
-  btnForceDelete.click(function () { deleteForm.attr('action', '/course/delete/'
-  + courseId + '/force?_method=DELETE'); deleteForm.submit(); }); });
+  $(document).ready(function () { const restoreForm = $("#restore-course-form");
+  const deleteForm = $("#force-delete-course-form"); let courseId; var
+  checkboxAll = $("#checkbox-all"); var courseItemCheckBox =
+  $('input[name="courseIds[]"]'); var executeActionButton =
+  $('.execute-action-btn'); var selectBulkAction = $("#bulk-action"); var
+  bulkActionForm = $("#bulk-action-form");
+  $(".btn-outline-success").click(function (e) { e.preventDefault(); courseId =
+  $(this).data("id"); restoreForm.attr("action", "/course/restore/" + courseId +
+  "?_method=PATCH"); restoreForm.submit(); });
+  $("#course-delete-modal").on("show.bs.modal", function (event) { const button
+  = $(event.relatedTarget); courseId = button.data("id"); });
+  $("#btn-force-delete-course").click(function () { deleteForm.attr("action",
+  "/course/delete/" + courseId + "/force?_method=DELETE"); deleteForm.submit();
+  }); checkboxAll.change(function () { var isChecked = $(this).prop("checked");
+  courseItemCheckBox.prop("checked",isChecked); renderExecuteButton(); })
+  courseItemCheckBox.change(function(){ if(!$(this).prop("checked")){
+  checkboxAll.prop("checked", false); } if(courseItemCheckBox.length ===
+  $('input[name="courseIds[]"]:checked').length){ checkboxAll.prop("checked",
+  true); } renderExecuteButton(); }); function renderExecuteButton(){ var
+  checkedCount = $('input[name="courseIds[]"]:checked').length; if(checkedCount
+  > 0){ executeActionButton.prop("disabled",false); }else{
+  executeActionButton.prop("disabled",true); } };
+  executeActionButton.click(function (e){ e.preventDefault(); var action =
+  selectBulkAction.val(); if(!action){ selectBulkAction.addClass("is-invalid");
+  return; } if(action === "restore"){
+  bulkActionForm.attr("action","/course/restore/bulk?_method=PATCH"); } else
+  if(action ==="delete"){
+  bulkActionForm.attr("action","/course/delete/bulk?_method=DELETE"); }
+  bulkActionForm.submit(); }); });
 </script>
