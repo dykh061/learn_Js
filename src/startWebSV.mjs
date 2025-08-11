@@ -50,8 +50,8 @@ app.engine(
           asc: "desc",
           desc: "asc",
         };
-        const type = types[sortType] || "default";
-        const icon = icons[sortType] || types.default;
+        const type = types[sortType];
+        const icon = icons[sortType];
 
         return `<a href="?_sort&column=${field}&type=${type}">
             <i class="${icon}"></i>

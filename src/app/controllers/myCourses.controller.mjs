@@ -8,9 +8,10 @@ class MyCoursesController {
   index(req, res, next) {
     let courseQuery = course.find();
 
-    if ("_sort" in req.query) {
+    if (res.locals._sort.enable) {
+      const { column, type } = res.locals._sort;
       courseQuery = courseQuery.sort({
-        [req.query.column]: req.query.type,
+        [column]: type,
       });
     }
 
