@@ -48,9 +48,15 @@
       <tr>
         <th scope="col" colspan="2">#</th>
         <th scope="col">Image</th>
-        <th scope="col">Name</th>
-        <th scope="col">Description</th>
-        <th scope="col">Deleted At</th>
+        <th scope="col">Name
+          {{{sortable "name" _sort}}}
+        </th>
+        <th scope="col">Description
+          {{{sortable "description" _sort}}}
+        </th>
+        <th scope="col">Deleted At
+          {{{sortable "deletedAt" _sort}}}
+        </th>
         <th scope="col" colspan="2" class="text-center">Actions</th>
       </tr>
     </thead>

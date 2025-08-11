@@ -31,6 +31,17 @@ Course.pre("save", async function (next) {
   next();
 });
 
+// custom query helpers
+Course.query.sortable = function (res) {
+  if (res.locals._sort.enable) {
+    const { column, type } = res.locals._sort;
+    return this.sort({
+      [column]: type,
+    });
+  }
+  return this;
+};
+
 // add plugins
 
 Course.plugin(mongooseDelete, {

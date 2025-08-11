@@ -10,6 +10,7 @@ import router from "./routes/index.mjs";
 import * as db from "./config/db/index.mjs";
 import methodOverride from "method-override";
 import { sortMiddleware } from "./app/middlewares/sort.middleware.mjs";
+import handlebarsHelper from "./helpers/handlebars.mjs";
 db.connect();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -36,28 +37,7 @@ app.engine(
   "hbs",
   engine({
     extname: ".hbs",
-    helpers: {
-      addOne: (a, b) => a + b,
-      sortable: (field, sort) => {
-        const sortType = field === sort.column ? sort.type : "default";
-        const icons = {
-          default: "cil-elevator",
-          asc: "bi bi-sort-up",
-          desc: "bi bi-sort-up-alt",
-        };
-        const types = {
-          default: "desc",
-          asc: "desc",
-          desc: "asc",
-        };
-        const type = types[sortType];
-        const icon = icons[sortType];
-
-        return `<a href="?_sort&column=${field}&type=${type}">
-            <i class="${icon}"></i>
-          </a>`;
-      },
-    },
+    helpers: handlebarsHelper,
   })
 );
 app.set("view engine", "hbs");

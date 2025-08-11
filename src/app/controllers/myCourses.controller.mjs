@@ -6,16 +6,7 @@ import {
 } from "../../utils/softDeleteHelpers.mjs";
 class MyCoursesController {
   index(req, res, next) {
-    let courseQuery = course.find();
-
-    if (res.locals._sort.enable) {
-      const { column, type } = res.locals._sort;
-      courseQuery = courseQuery.sort({
-        [column]: type,
-      });
-    }
-
-    Promise.all([courseQuery, countDeletedCourses()])
+    Promise.all([course.find().sortable(res), countDeletedCourses()])
       .then(([courses, documentDeleted]) => {
         res.render("me/courses", {
           documentDeleted,
@@ -25,7 +16,9 @@ class MyCoursesController {
       .catch(next);
   }
   trash(req, res, next) {
-    findDeletedCourses()
+    course
+      .findDeleted()
+      .sortable(res)
       .then((trashCourses) => {
         res.render("me/trash", {
           trashCourses: mutipleMongooseToObject(trashCourses),

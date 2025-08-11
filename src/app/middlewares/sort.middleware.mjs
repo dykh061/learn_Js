@@ -1,4 +1,10 @@
-const ALLOWED_COLUMNS = ["name", "createdAt", "updatedAt", "description"];
+const ALLOWED_COLUMNS = [
+  "name",
+  "createdAt",
+  "updatedAt",
+  "description",
+  "deletedAt",
+];
 const ALLOWED_TYPES = ["asc", "desc"];
 
 export async function sortMiddleware(req, res, next) {
